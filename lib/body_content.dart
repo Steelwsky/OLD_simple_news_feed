@@ -18,28 +18,35 @@ class BodyContent extends StatelessWidget {
               child: rssFeed.items == null
                   ? InitialEmptyList()
                   : ListView(
-                  children: rssFeed.items
-                      .map(
-                        (i) => ListTile(
-                      title: Text(
-                        i.title,
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      subtitle: Text(
-                        i.description,
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(fontSize: 16),
-                      ),
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => SelectedNewsPage(
-                                    item: rssFeed
-                                        .items[rssFeed.items.indexOf(i)])));
-                          },
-                    ),
-                  )
-                      .toList()));
+                      children: rssFeed.items
+                          .map(
+                            (i) => ListTile(
+                              title: Text(
+                                i.title,
+                                style: TextStyle(fontSize: 18),
+                              ),
+                              subtitle: Text(
+                                i.description,
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              trailing: newsController.isNewsInHistory(i)
+                                  ? Icon(Icons.bookmark,
+                                  size: 24, color: Colors.amber)
+                                  : Icon(Icons.bookmark_border,
+                                  size: 24, color: Colors.amber),
+                              onTap: () {
+                                newsController.addNotViewedToHistory(rssFeed
+                                    .items[rssFeed.items.indexOf(i)].guid);
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (_) => SelectedNewsPage(
+                                        item: rssFeed
+                                            .items[rssFeed.items.indexOf(i)])));
+                              },
+                            ),
+                          )
+                          .toList()));
         });
   }
 }
