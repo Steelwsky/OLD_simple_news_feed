@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:simplenewsfeed/body_content.dart';
+import 'news_controller.dart';
+import 'body_content.dart';
 import 'package:provider/provider.dart';
-import 'package:simplenewsfeed/news_controller.dart';
 
 class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Provider<NewsController>(
-        create: (_) => NewsController(),
+    return MultiProvider(
+        providers: [
+          Provider<NewsController>(
+            create: (context) => NewsController(),
+          ),
+          Provider<ViewedNewsController>(
+            create: (context) => ViewedNewsController(),
+          ),
+        ],
         child: Scaffold(
           appBar: AppBar(
             title: Text('NewsFeed'),
