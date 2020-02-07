@@ -12,17 +12,15 @@ class NewsController {
     final res = await _client.get(_url);
     final xmlStr = res.body;
     final parsedNews = RssFeed.parse(xmlStr);
-    final viewedNews = PreparedNewsFeed(feed: parsedNews);
+    PreparedNewsFeed(feed: parsedNews);
 
 //    newsState.value = RssFeed.parse(xmlStr); //TODO DON'T FORGET
   }
 }
 
 class PreparedNewsFeed {
-  PreparedNewsFeed({this.feed, this.isViewed});
+  PreparedNewsFeed({this.feed});
   final RssFeed feed;
-  final bool isViewed;
-
 }
 
 class ViewedNewsController {
@@ -38,16 +36,29 @@ class ViewedNewsController {
     print(_newsAlreadyViewed);
   }
 
-  void checkViewedItems () {
+  void checkViewedItems() {
     for (var i = 0; i < preparedNewsFeed.feed.items.length; i++) {
       isNewsInHistory(preparedNewsFeed.feed.items.elementAt(i));
     }
   }
 
-  bool isNewsInHistory(RssItem item) {
+//  bool isNewsInHistory(RssItem item) {
+//    if (_newsAlreadyViewed.contains(item.guid)) {
+//      return true;
+//    } else
+//      return false;
+//  }
+
+  Items isNewsInHistory(RssItem item) {
     if (_newsAlreadyViewed.contains(item.guid)) {
-      return true;
+      return Items(item: item, isViewed: true);
     } else
-      return false;
+      return Items(item: item, isViewed: false);
   }
+}
+
+class Items {
+  Items({this.item, this.isViewed});
+  final RssItem item;
+  final bool isViewed;
 }
