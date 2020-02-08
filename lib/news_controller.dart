@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:webfeed/webfeed.dart';
 
-
 class ViewedNewsController {
   final _url = 'http://www.cnbc.com/id/19789731/device/rss/rss.xml';
   final _client = Client();
@@ -19,14 +18,16 @@ class ViewedNewsController {
     checkViewedNews(parsedNews);
   }
 
-  void addNotViewedToHistory(String guid, int index) { //i need somehow update the exact item of the whole list via its guid(?)
+  void addNotViewedToHistory(String guid, int index) {
     _newsAlreadyViewed.add(guid);
     final list = viewedState.value.items;
-    list.elementAt(index).isViewed = true;
+    list[index] = MyRssItem(
+        item: list.elementAt(index).item,
+        isViewed: isNewsInHistory(list.elementAt(index).item));
     viewedState.value = PreparedFeed(items: list);
   }
 
-  void updateList () {
+  void updateList() {
     viewedState.value = PreparedFeed(items: viewedState.value.items);
   }
 
@@ -53,7 +54,7 @@ class MyRssItem {
   MyRssItem({this.item, this.isViewed});
 
   final RssItem item;
-  bool isViewed;
+  final bool isViewed;
 }
 
 class PreparedFeed {
