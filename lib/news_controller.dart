@@ -2,26 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:webfeed/webfeed.dart';
 
-//class NewsController {
-//  final _url = 'http://www.cnbc.com/id/19789731/device/rss/rss.xml';
-//  final _client = Client();
-//  final viewedNewsController = ViewedNewsController();
-//
-//
-////  final ValueNotifier<RssFeed> newsState = ValueNotifier(RssFeed());
-//
-//  Future<void> fetchNews() async {
-//    final res = await _client.get(_url);
-//    final xmlStr = res.body;
-//    final parsedNews = RssFeed.parse(xmlStr);
-//    print(parsedNews.items);
-////    ViewedNewsController().checkViewedNews(parsedNews);
-//
-//    viewedNewsController.checkViewedNews(parsedNews);
-//
-////    newsState.value = RssFeed.parse(xmlStr); //TODO DON'T FORGET
-//  }
-//}
 
 class ViewedNewsController {
   final _url = 'http://www.cnbc.com/id/19789731/device/rss/rss.xml';
@@ -39,16 +19,21 @@ class ViewedNewsController {
     checkViewedNews(parsedNews);
   }
 
-  void addNotViewedToHistory(String guid) {
+  void addNotViewedToHistory(String guid) { //i need somehow update the exact item of the whole list via its guid(?)
     _newsAlreadyViewed.add(guid);
-    print(_newsAlreadyViewed);
+    print('addNotViewedToHistory method: ${viewedState.value.items[0].isViewed}');
+  }
+
+  void updateList () {
+    viewedState.value = PreparedFeed(items: viewedState.value.items);
   }
 
   bool isNewsInHistory(RssItem item) {
     if (_newsAlreadyViewed.contains(item.guid)) {
       return true;
-    } else
+    } else {
       return false;
+    }
   }
 
   void checkViewedNews(RssFeed feed) {
@@ -57,10 +42,8 @@ class ViewedNewsController {
     for (var i = 0; i < feed.items.length; i++) {
       preparedFeed.items.add(MyRssItem(
           item: feed.items[i], isViewed: isNewsInHistory(feed.items[i])));
-      print('i: $i, ${preparedFeed.items[i].isViewed}');
     }
     viewedState.value = preparedFeed;
-    print('preparedFeed: ${viewedState.value.items}');
   }
 }
 
