@@ -27,10 +27,6 @@ class ViewedNewsController {
     viewedState.value = PreparedFeed(items: list);
   }
 
-  void updateList() {
-    viewedState.value = PreparedFeed(items: viewedState.value.items);
-  }
-
   bool isNewsInHistory(RssItem item) {
     if (_newsAlreadyViewed.contains(item.guid)) {
       return true;
