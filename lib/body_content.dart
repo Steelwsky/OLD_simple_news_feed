@@ -15,7 +15,7 @@ class BodyContent extends StatelessWidget {
         builder: (_, rssFeed, __) {
           return RefreshIndicator(
               key: Key('refresh'),
-              onRefresh: () => NewsController().fetchNews(),
+              onRefresh: () => viewedController.fetchNews(),
               child: rssFeed.items == null
                   ? InitialEmptyList()
                   : ListView(

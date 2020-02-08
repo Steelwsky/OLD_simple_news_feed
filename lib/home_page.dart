@@ -8,9 +8,9 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          Provider<NewsController>(
-            create: (context) => NewsController(),
-          ),
+//          Provider<NewsController>(
+//            create: (context) => NewsController(),
+//          ),
           Provider<ViewedNewsController>(
             create: (context) => ViewedNewsController(),
           ),
