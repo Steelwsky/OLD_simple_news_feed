@@ -37,7 +37,7 @@ class BodyContent extends StatelessWidget {
                                       size: 24, color: Colors.amber),
                               onTap: () {
                                 viewedController
-                                    .addNotViewedToHistory(i.item.guid);
+                                    .addNotViewedToHistory(i.item.guid, rssFeed.items.indexOf(i));
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (_) =>
                                         SelectedNewsPage(item: i.item)));

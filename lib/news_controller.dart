@@ -19,9 +19,11 @@ class ViewedNewsController {
     checkViewedNews(parsedNews);
   }
 
-  void addNotViewedToHistory(String guid) { //i need somehow update the exact item of the whole list via its guid(?)
+  void addNotViewedToHistory(String guid, int index) { //i need somehow update the exact item of the whole list via its guid(?)
     _newsAlreadyViewed.add(guid);
-    print('addNotViewedToHistory method: ${viewedState.value.items[0].isViewed}');
+    final list = viewedState.value.items;
+    list.elementAt(index).isViewed = true;
+    viewedState.value = PreparedFeed(items: list);
   }
 
   void updateList () {
@@ -51,7 +53,7 @@ class MyRssItem {
   MyRssItem({this.item, this.isViewed});
 
   final RssItem item;
-  final bool isViewed;
+  bool isViewed;
 }
 
 class PreparedFeed {
