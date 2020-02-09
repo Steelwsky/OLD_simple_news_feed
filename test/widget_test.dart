@@ -14,12 +14,11 @@ void main() {
     expect(find.byKey(Key('empty')), findsOneWidget);
   });
 
-
   testWidgets('expect list after pull down', (WidgetTester tester) async {
 
     await pumpGivenApp(tester);
     expect(find.byKey(Key('empty')), findsOneWidget);
-    await tester.drag(find.byKey(Key('empty')), const Offset(0.0, 300.0));
+    await tester.drag(find.byKey(Key('empty')), const Offset(0.0, 500.0));
     await tester.pump(const Duration(seconds: 3));
     expect(find.byKey(Key('titleKey')), findsWidgets);
   });

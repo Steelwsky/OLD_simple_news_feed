@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:simplenewsfeed/bookmark_widget.dart';
-
 import 'news_controller.dart';
 import 'selected_news_page.dart';
 
 class ListViewWidget extends StatelessWidget {
-  const ListViewWidget(
-      {Key key, @required this.viewedController, @required this.rssFeed})
-      : super(key: key);
-
-  final ViewedNewsController viewedController;
+  const ListViewWidget({Key key, @required this.rssFeed}) : super(key: key);
   final PreparedFeed rssFeed;
 
   @override
@@ -30,7 +24,10 @@ class ListViewWidget extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(fontSize: 16),
                 ),
-                trailing: Bookmark(isViewed: i.isViewed),
+                trailing: Icon(
+                    i.isViewed ? Icons.bookmark : Icons.bookmark_border,
+                    size: 24,
+                    color: Colors.amber),
                 onTap: () {
                   viewedController.addNotViewedToHistory(
                       i.item.guid, rssFeed.items.indexOf(i));

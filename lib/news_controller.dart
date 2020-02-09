@@ -2,11 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:webfeed/webfeed.dart';
 
+//todo unit tests of controller
+
 class ViewedNewsController {
   final _url = 'http://www.cnbc.com/id/19789731/device/rss/rss.xml';
   final _client = Client();
 
-  final Set<String> _newsAlreadyViewed = Set.from([]);
+  final Set<String> _newsAlreadyViewed = Set.from([]); //to db
 
   final ValueNotifier<PreparedFeed> viewedState = ValueNotifier(PreparedFeed());
 
@@ -19,7 +21,7 @@ class ViewedNewsController {
   }
 
   void addNotViewedToHistory(String guid, int index) {
-    _newsAlreadyViewed.add(guid);
+    _newsAlreadyViewed.add(guid);  //to db
     final list = viewedState.value.items;
     list[index] = MyRssItem(
         item: list.elementAt(index).item,
@@ -27,13 +29,7 @@ class ViewedNewsController {
     viewedState.value = PreparedFeed(items: list);
   }
 
-  bool isNewsInHistory(RssItem item) {
-    if (_newsAlreadyViewed.contains(item.guid)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  bool isNewsInHistory(RssItem item) => _newsAlreadyViewed.contains(item.guid);
 
   void checkViewedNews(RssFeed feed) {
     final List<MyRssItem> listItem = List<MyRssItem>();

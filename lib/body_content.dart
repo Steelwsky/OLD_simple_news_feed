@@ -13,11 +13,10 @@ class BodyContent extends StatelessWidget {
         builder: (_, rssFeed, __) {
           return RefreshIndicator(
               key: Key('refresh'),
-              onRefresh: () => viewedController.fetchNews(),
+              onRefresh: viewedController.fetchNews,
               child: rssFeed.items == null
                   ? InitialEmptyList()
-                  : ListViewWidget(
-                      viewedController: viewedController, rssFeed: rssFeed));
+                  : ListViewWidget(rssFeed: rssFeed));
         });
   }
 }
