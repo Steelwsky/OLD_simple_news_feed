@@ -6,17 +6,16 @@ import 'package:provider/provider.dart';
 class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-        providers: [
-          Provider<ViewedNewsController>(
-            create: (context) => ViewedNewsController(),
-          ),
+    final newsController = Provider.of<ViewedNewsController>(context);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('NewsFeed'),
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.delete), onPressed: newsController.deleteEntries)
         ],
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text('NewsFeed'),
-          ),
-          body: BodyContent(),
-        ));
+      ),
+      body: BodyContent(),
+    );
   }
 }

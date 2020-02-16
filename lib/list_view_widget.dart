@@ -30,7 +30,7 @@ class ListViewWidget extends StatelessWidget {
                     color: Colors.amber),
                 onTap: () {
                   viewedController.addNotViewedToHistory(
-                      i.item.guid, rssFeed.items.indexOf(i));
+                      i.item, rssFeed.items.indexOf(i));
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (_) => SelectedNewsPage(item: i.item)));
                 },
