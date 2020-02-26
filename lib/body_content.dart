@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'list_view_widget.dart';
+import 'list_view_latest.dart';
 import 'news_controller.dart';
 import 'empty_list.dart';
 
@@ -16,7 +16,7 @@ class BodyContent extends StatelessWidget {
               onRefresh: viewedController.fetchNews,
               child: rssFeed.items == null
                   ? InitialEmptyList()
-                  : ListViewWidget(rssFeed: rssFeed));
+                  : ListViewLatest(preparedRssFeed: rssFeed));
         });
   }
 }

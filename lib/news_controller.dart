@@ -2,14 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:simplenewsfeed/viewed.dart';
 import 'package:webfeed/webfeed.dart';
+import 'package:provider/provider.dart';
 
 //todo unit tests of controller
 
 class ViewedNewsController {
+
+//  ViewedNewsController(MyDatabase db);
+
   final _url = 'http://www.cnbc.com/id/19789731/device/rss/rss.xml';
   final _client = Client();
 
-  final myDatabase = MyDatabase();
+//   Provider<MyDatabase> myDatabase = MyDatabase();
+
+  final ValueNotifier<MyDatabase> database = ValueNotifier(MyDatabase());
+
 
   final ValueNotifier<PreparedFeed> viewedState = ValueNotifier(PreparedFeed());
 
@@ -23,7 +30,7 @@ class ViewedNewsController {
 
   void addNotViewedToHistory(RssItem item, int index) async {
     if (await isNewsInHistory(item) == false) {
-      myDatabase.addToViewed(item);
+      database.value.addToViewed(item);
       final list = viewedState.value.items;
       list[index] = MyRssItem(
           item: list
@@ -37,7 +44,7 @@ class ViewedNewsController {
   }
 
   Future<bool> isNewsInHistory(RssItem item) async {
-    final something = await myDatabase.isViewedItem(item.guid);
+    final something = await database.value.isViewedItem(item.guid);
     if (something != null) {
       return true;
     } else {
@@ -47,7 +54,8 @@ class ViewedNewsController {
 
 
   void deleteEntries() {
-    myDatabase.deleteRows();
+    database.value.deleteRows();
+    fetchNews();
     print('db after deletion');
   }
 

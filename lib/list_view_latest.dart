@@ -3,15 +3,16 @@ import 'package:provider/provider.dart';
 import 'news_controller.dart';
 import 'selected_news_page.dart';
 
-class ListViewWidget extends StatelessWidget {
-  const ListViewWidget({Key key, @required this.rssFeed}) : super(key: key);
-  final PreparedFeed rssFeed;
+class ListViewLatest extends StatelessWidget {
+  const ListViewLatest({Key key, @required this.preparedRssFeed})
+      : super(key: key);
+  final PreparedFeed preparedRssFeed;
 
   @override
   Widget build(BuildContext context) {
     final viewedController = Provider.of<ViewedNewsController>(context);
     return ListView(
-        children: rssFeed.items
+        children: preparedRssFeed.items
             .map(
               (i) => ListTile(
                 title: Text(
@@ -30,7 +31,7 @@ class ListViewWidget extends StatelessWidget {
                     color: Colors.amber),
                 onTap: () {
                   viewedController.addNotViewedToHistory(
-                      i.item, rssFeed.items.indexOf(i));
+                      i.item, preparedRssFeed.items.indexOf(i));
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (_) => SelectedNewsPage(item: i.item)));
                 },

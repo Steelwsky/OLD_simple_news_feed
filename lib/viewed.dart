@@ -42,4 +42,6 @@ class MyDatabase extends _$MyDatabase {
   }
 
   Future<List<ViewedItem>> get allViewedItems => select(viewedItems).get();
+
+  Stream<List<ViewedItem>> watchAllViewedItems() => select(viewedItems).watch();
 }
