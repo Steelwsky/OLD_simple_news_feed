@@ -45,3 +45,5 @@ class MyDatabase extends _$MyDatabase {
 
   Stream<List<ViewedItem>> watchAllViewedItems() => select(viewedItems).watch();
 }
+
+

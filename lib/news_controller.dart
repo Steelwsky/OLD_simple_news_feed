@@ -2,21 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:simplenewsfeed/viewed.dart';
 import 'package:webfeed/webfeed.dart';
-import 'package:provider/provider.dart';
 
 //todo unit tests of controller
 
 class ViewedNewsController {
-
-//  ViewedNewsController(MyDatabase db);
-
   final _url = 'http://www.cnbc.com/id/19789731/device/rss/rss.xml';
   final _client = Client();
 
-//   Provider<MyDatabase> myDatabase = MyDatabase();
-
   final ValueNotifier<MyDatabase> database = ValueNotifier(MyDatabase());
-
 
   final ValueNotifier<PreparedFeed> viewedState = ValueNotifier(PreparedFeed());
 
@@ -33,12 +26,8 @@ class ViewedNewsController {
       database.value.addToViewed(item);
       final list = viewedState.value.items;
       list[index] = MyRssItem(
-          item: list
-              .elementAt(index)
-              .item,
-          isViewed: await isNewsInHistory(list
-              .elementAt(index)
-              .item));
+          item: list.elementAt(index).item,
+          isViewed: await isNewsInHistory(list.elementAt(index).item));
       viewedState.value = PreparedFeed(items: list);
     }
   }
@@ -52,13 +41,11 @@ class ViewedNewsController {
     }
   }
 
-
   void deleteEntries() {
     database.value.deleteRows();
     fetchNews();
     print('db after deletion');
   }
-
 
   void checkViewedNews(RssFeed feed) async {
     final List<MyRssItem> listItem = List<MyRssItem>();
@@ -82,4 +69,31 @@ class PreparedFeed {
   PreparedFeed({this.items});
 
   final List<MyRssItem> items;
+}
+
+class MyIntController {
+  final ValueNotifier<int> intState = ValueNotifier(0);
+
+  void pageChanged(int index) {
+    intState.value = index;
+    print('pageChanged: ${intState.value}');
+  }
+
+  void bottomTapped(int index, PageController pageController) {
+    print('pagecontroller index: ${pageController.initialPage}');
+    pageController.animateToPage(index,
+        duration: Duration(milliseconds: 500), curve: Curves.ease);
+
+    intState.value = index;
+    print('bottomTapped: ${intState.value}');
+  }
+}
+
+class MyPageController {
+  MyPageController({this.pageController});
+
+  PageController pageController = PageController(
+    initialPage: 0,
+    keepPage: true,
+  );
 }

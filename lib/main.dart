@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:simplenewsfeed/viewed.dart';
 import 'home_page.dart';
 import 'package:provider/provider.dart';
-import 'list_view_history.dart';
 import 'news_controller.dart';
 
 void main() => runApp(MyApp());
@@ -15,7 +14,11 @@ class MyApp extends StatelessWidget {
           Provider<ViewedNewsController>(
             create: (context) => ViewedNewsController(),
           ),
-          Provider<MyDatabase>(create: (_) => MyDatabase(),
+          Provider<MyDatabase>(
+            create: (_) => MyDatabase(),
+          ),
+          Provider<MyIntController>(
+            create: (context) => MyIntController(),
           )
         ],
         child: MaterialApp(

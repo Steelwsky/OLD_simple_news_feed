@@ -1,44 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:simplenewsfeed/list_view_history.dart';
-import 'body_content.dart';
+import 'package:provider/provider.dart';
+import 'news_controller.dart';
 
 class MyBottomNavBar extends StatefulWidget {
-  MyBottomNavBar({Key key}) : super(key: key);
-
-  static List<Widget> widgetOptions = <Widget>[
-    BodyContent(),
-    ListViewHistory(),
-  ];
+  MyBottomNavBar({Key key, this.pageController}) : super(key: key);
+  final PageController pageController;
 
   @override
-  _MyBottomNavBarState createState() => _MyBottomNavBarState();
+  _MyBottomNavBarState createState() => _MyBottomNavBarState(pageController);
 }
 
 class _MyBottomNavBarState extends State<MyBottomNavBar> {
-  int _selectedIndex = 0;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
+  _MyBottomNavBarState(this.pageController);
+  final PageController pageController;
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          title: Text('Home'),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.book),
-          title: Text('History'),
-        ),
-      ],
-      currentIndex: _selectedIndex,
-      selectedItemColor: Colors.amber[800],
-      onTap: _onItemTapped,
+    final MyIntController myIntController =
+        Provider.of<MyIntController>(context);
+    return ValueListenableBuilder<int>(
+      valueListenable: myIntController.intState,
+      builder: (_, newState, __) {
+        return BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                title: Text('Home'),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.book),
+                title: Text('History'),
+              ),
+            ],
+            currentIndex: myIntController.intState.value,
+            selectedItemColor: Colors.amber[800],
+            onTap: (index) {
+              myIntController.bottomTapped(index, pageController);
+              print('bottomNavBar widget post: $index');
+            });
+      },
     );
   }
 }
