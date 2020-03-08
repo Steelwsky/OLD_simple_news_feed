@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:simplenewsfeed/selected_news_page.dart';
 import 'package:simplenewsfeed/viewed.dart';
 
 class ListViewHistory extends StatelessWidget {
@@ -32,7 +33,10 @@ class ListViewHistory extends StatelessWidget {
                     ),
                     trailing:
                         Icon(Icons.bookmark, size: 24, color: Colors.amber),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) => SelectedNewsPage(viewedItem: viewed[index])));
+                    },
                   );
                 },
               );

@@ -33,7 +33,7 @@ class ListViewLatest extends StatelessWidget {
                   viewedController.addNotViewedToHistory(
                       i.item, preparedRssFeed.items.indexOf(i));
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => SelectedNewsPage(item: i.item)));
+                      builder: (_) => SelectedNewsPage(rssItem: i.item)));
                 },
               ),
             )

@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:simplenewsfeed/viewed.dart';
 import 'package:webfeed/webfeed.dart';
 
 class SelectedNewsPage extends StatelessWidget {
-  SelectedNewsPage({Key key, this.item}) : super(key: key);
-  final RssItem item;
+  SelectedNewsPage({Key key, this.rssItem, this.viewedItem}) : super(key: key);
+  final RssItem rssItem;
+  final ViewedItem viewedItem;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(item.title)),
+      appBar: AppBar(
+        title: Text(rssItem != null ? rssItem.title : viewedItem.title),
+      ),
       body: Column(
         children: [
           SingleChildScrollView(
@@ -18,7 +22,9 @@ class SelectedNewsPage extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     Text(
-                      item.description,
+                      rssItem != null
+                          ? rssItem.description
+                          : viewedItem.content,
                       style: TextStyle(fontSize: 16),
                     ),
                   ],

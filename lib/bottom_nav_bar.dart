@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'news_controller.dart';
 
 class MyBottomNavBar extends StatefulWidget {
-  MyBottomNavBar({Key key, this.pageController}) : super(key: key);
+  MyBottomNavBar({Key key, @required this.pageController}) : super(key: key);
   final PageController pageController;
 
   @override
