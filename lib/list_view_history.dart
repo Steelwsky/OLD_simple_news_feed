@@ -8,9 +8,6 @@ class ListViewHistory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final myDatabase = Provider.of<MyDatabase>(context);
-
-    //TODO Page should reload after deletion
-
     return StreamBuilder(
       stream: myDatabase.watchAllViewedItems(),
       builder: (context, AsyncSnapshot<List<ViewedItem>> snapshot) {
