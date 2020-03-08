@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:simplenewsfeed/viewed.dart';
-import 'news_controller.dart';
-import 'selected_news_page.dart';
 
 class ListViewHistory extends StatelessWidget {
   const ListViewHistory({Key key}) : super(key: key);
@@ -11,8 +9,9 @@ class ListViewHistory extends StatelessWidget {
   Widget build(BuildContext context) {
     final myDatabase = Provider.of<MyDatabase>(context);
 
-    //TODO prepare viewed items in backend and just here the final list.
-    //TODO Also, this page should reload after deletion
+    //DON'T DO prepare viewed items in backend and just here the final list. It will help with auto updating list after deletion.
+   // coz we'll duplicate exactly the same information in memory, which is overkill.
+    //TODO Page should reload after deletion
 
     return StreamBuilder(
       stream: myDatabase.watchAllViewedItems(),

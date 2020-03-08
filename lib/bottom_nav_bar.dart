@@ -15,8 +15,8 @@ class _MyBottomNavBarState extends State<MyBottomNavBar> {
   final PageController pageController;
   @override
   Widget build(BuildContext context) {
-    final MyIntController myIntController =
-        Provider.of<MyIntController>(context);
+    final MyPageIndexController myIntController =
+        Provider.of<MyPageIndexController>(context);
     return ValueListenableBuilder<int>(
       valueListenable: myIntController.intState,
       builder: (_, newState, __) {

@@ -5,11 +5,11 @@ import 'package:webfeed/webfeed.dart';
 
 //todo unit tests of controller
 
+final ValueNotifier<MyDatabase> database = ValueNotifier(MyDatabase());
+
 class ViewedNewsController {
   final _url = 'http://www.cnbc.com/id/19789731/device/rss/rss.xml';
   final _client = Client();
-
-  final ValueNotifier<MyDatabase> database = ValueNotifier(MyDatabase());
 
   final ValueNotifier<PreparedFeed> viewedState = ValueNotifier(PreparedFeed());
 
@@ -71,7 +71,7 @@ class PreparedFeed {
   final List<MyRssItem> items;
 }
 
-class MyIntController {
+class MyPageIndexController {
   final ValueNotifier<int> intState = ValueNotifier(0);
 
   void pageChanged(int index) {
