@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simplenewsfeed/list_view_history.dart';
 import 'package:simplenewsfeed/viewed.dart';
 import 'home_page.dart';
 import 'package:provider/provider.dart';
@@ -12,13 +13,15 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           Provider<ViewedNewsController>(
-            create: (context) => ViewedNewsController(),
+            create: (_) => ViewedNewsController(),
           ),
           Provider<MyDatabase>(
             create: (_) => MyDatabase(),
+            child: ListViewHistory(),
+            dispose: (context, db) => db.close(),
           ),
-          Provider<MyIntController>(
-            create: (context) => MyIntController(),
+          Provider<MyPageIndexController>(
+            create: (_) => MyPageIndexController(),
           )
         ],
         child: MaterialApp(

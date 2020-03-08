@@ -15,8 +15,14 @@ class ViewedItems extends Table {
 
 @UseMoor(tables: [ViewedItems])
 class MyDatabase extends _$MyDatabase {
-  MyDatabase()
+  MyDatabase._()
       : super(FlutterQueryExecutor.inDatabaseFolder(path: 'db1.sqlite'));
+
+  static final MyDatabase _instance = MyDatabase._();
+
+  factory MyDatabase() {
+    return _instance;
+  }
 
   @override
   int get schemaVersion => 1;
@@ -45,5 +51,4 @@ class MyDatabase extends _$MyDatabase {
 
   Stream<List<ViewedItem>> watchAllViewedItems() => select(viewedItems).watch();
 }
-
 

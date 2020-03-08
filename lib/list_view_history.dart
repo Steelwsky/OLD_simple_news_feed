@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:simplenewsfeed/viewed.dart';
-import 'news_controller.dart';
-import 'selected_news_page.dart';
 
 class ListViewHistory extends StatelessWidget {
   const ListViewHistory({Key key}) : super(key: key);
@@ -11,15 +9,14 @@ class ListViewHistory extends StatelessWidget {
   Widget build(BuildContext context) {
     final myDatabase = Provider.of<MyDatabase>(context);
 
-    //TODO prepare viewed items in backend and just here the final list.
-    //TODO Also, this page should reload after deletion
+    //TODO Page should reload after deletion
 
     return StreamBuilder(
       stream: myDatabase.watchAllViewedItems(),
       builder: (context, AsyncSnapshot<List<ViewedItem>> snapshot) {
         final viewed = snapshot.data ?? List();
         return viewed.isEmpty
-            ? Text('There is no single story =/')
+            ? EmptyHistoryList()
             : ListView.builder(
                 key: PageStorageKey('history'),
                 itemCount: viewed.length,
@@ -43,6 +40,24 @@ class ListViewHistory extends StatelessWidget {
                 },
               );
       },
+    );
+  }
+}
+
+class EmptyHistoryList extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 24,
+      alignment: Alignment.topCenter,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 40.0),
+        child: Text(
+          'There is no single record',
+          key: Key('empty'),
+          style: TextStyle(fontSize: 18),
+        ),
+      ),
     );
   }
 }

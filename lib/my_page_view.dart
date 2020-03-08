@@ -26,8 +26,8 @@ class _MyPageViewState extends State<MyPageView> {
 
   @override
   Widget build(BuildContext context) {
-    final MyIntController myIntController =
-        Provider.of<MyIntController>(context);
+    final MyPageIndexController myIntController =
+        Provider.of<MyPageIndexController>(context);
     return PageView(
       controller: pageController,
       onPageChanged: (index) {
