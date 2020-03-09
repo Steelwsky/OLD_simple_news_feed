@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:simplenewsfeed/body_content.dart';
 import 'package:simplenewsfeed/news_controller.dart';
+import 'package:simplenewsfeed/viewed.dart';
 
 import 'list_view_history.dart';
 
@@ -28,17 +29,19 @@ class _MyPageViewState extends State<MyPageView> {
   Widget build(BuildContext context) {
     final MyPageIndexController myIntController =
         Provider.of<MyPageIndexController>(context);
-    return PageView(
-      controller: pageController,
-      onPageChanged: (index) {
-        myIntController.pageChanged(index);
-        print('widget PageView: $index');
-      },
-      children: <Widget>[
-        BodyContent(),
-        ListViewHistory(),
-      ],
+    return Provider<MyDatabase>(
+      create: (_) => MyDatabase(),
+      child: PageView(
+        controller: pageController,
+        onPageChanged: (index) {
+          myIntController.pageChanged(index);
+          print('widget PageView: $index');
+        },
+        children: <Widget>[
+          BodyContent(),
+          ListViewHistory(),
+        ],
+      ),
     );
   }
 }
-
