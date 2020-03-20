@@ -16,7 +16,7 @@ class ViewedItems extends Table {
 @UseMoor(tables: [ViewedItems])
 class MyDatabase extends _$MyDatabase {
   MyDatabase._()
-      : super(FlutterQueryExecutor.inDatabaseFolder(path: 'db1.sqlite'));
+      : super(FlutterQueryExecutor.inDatabaseFolder(path: 'db2.sqlite'));
 
   static final MyDatabase _instance = MyDatabase._();
 
@@ -28,22 +28,39 @@ class MyDatabase extends _$MyDatabase {
   int get schemaVersion => 1;
 
   void addToViewed(RssItem f) {
-    final viewed = ViewedItem(
-      id: f.guid,
-      title: f.title,
-      content: f.description,
-      link: f.link,
-    );
-    into(viewedItems).insert(viewed);
+    ViewedItem viewed;
+    if (f.guid != null) {
+      viewed = ViewedItem(
+        id: f.guid,
+        title: f.title,
+        content: f.description,
+        link: f.link,
+      );
+      into(viewedItems).insert(viewed);
+    } else {
+      viewed = ViewedItem(
+        id: f.link,
+        title: f.title,
+        content: f.description,
+        link: f.link,
+      );
+      into(viewedItems).insert(viewed);
+    }
   }
 
   Future deleteRows() {
     return (delete(viewedItems)).go();
   }
 
-  Future<ViewedItem> isViewedItem(String id) {
+  Future<ViewedItem> isViewedItemById(String id) {
     return (select(viewedItems)
           ..where((viewedItem) => viewedItem.id.equals(id)))
+        .getSingle();
+  }
+
+  Future<ViewedItem> isViewedItemByLink(String link) {
+    return (select(viewedItems)
+      ..where((viewedItem) => viewedItem.link.equals(link)))
         .getSingle();
   }
 
@@ -51,4 +68,3 @@ class MyDatabase extends _$MyDatabase {
 
   Stream<List<ViewedItem>> watchAllViewedItems() => select(viewedItems).watch();
 }
-

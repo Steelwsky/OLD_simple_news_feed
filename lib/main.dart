@@ -15,6 +15,9 @@ class MyApp extends StatelessWidget {
           ),
           Provider<MyPageIndexController>(
             create: (_) => MyPageIndexController(),
+          ),
+          Provider<Sources>(
+            create: (_) => Sources.cnbc,
           )
         ],
         child: MaterialApp(

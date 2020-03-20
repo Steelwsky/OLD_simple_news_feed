@@ -15,7 +15,6 @@ void main() {
   });
 
   testWidgets('expect list after pull down', (WidgetTester tester) async {
-
     await pumpGivenApp(tester);
     expect(find.byKey(Key('empty')), findsOneWidget);
     await tester.drag(find.byKey(Key('empty')), const Offset(0.0, 500.0));

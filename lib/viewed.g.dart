@@ -12,13 +12,11 @@ class ViewedItem extends DataClass implements Insertable<ViewedItem> {
   final String title;
   final String content;
   final String link;
-
   ViewedItem(
       {@required this.id,
       @required this.title,
       @required this.content,
       @required this.link});
-
   factory ViewedItem.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -32,7 +30,6 @@ class ViewedItem extends DataClass implements Insertable<ViewedItem> {
       link: stringType.mapFromDatabaseResponse(data['${effectivePrefix}link']),
     );
   }
-
   factory ViewedItem.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -43,7 +40,6 @@ class ViewedItem extends DataClass implements Insertable<ViewedItem> {
       link: serializer.fromJson<String>(json['link']),
     );
   }
-
   @override
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -75,7 +71,6 @@ class ViewedItem extends DataClass implements Insertable<ViewedItem> {
         content: content ?? this.content,
         link: link ?? this.link,
       );
-
   @override
   String toString() {
     return (StringBuffer('ViewedItem(')
@@ -90,7 +85,6 @@ class ViewedItem extends DataClass implements Insertable<ViewedItem> {
   @override
   int get hashCode => $mrjf($mrjc(id.hashCode,
       $mrjc(title.hashCode, $mrjc(content.hashCode, link.hashCode))));
-
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -106,14 +100,12 @@ class ViewedItemsCompanion extends UpdateCompanion<ViewedItem> {
   final Value<String> title;
   final Value<String> content;
   final Value<String> link;
-
   const ViewedItemsCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
     this.content = const Value.absent(),
     this.link = const Value.absent(),
   });
-
   ViewedItemsCompanion.insert({
     @required String id,
     @required String title,
@@ -123,7 +115,6 @@ class ViewedItemsCompanion extends UpdateCompanion<ViewedItem> {
         title = Value(title),
         content = Value(content),
         link = Value(link);
-
   ViewedItemsCompanion copyWith(
       {Value<String> id,
       Value<String> title,
@@ -142,15 +133,11 @@ class $ViewedItemsTable extends ViewedItems
     with TableInfo<$ViewedItemsTable, ViewedItem> {
   final GeneratedDatabase _db;
   final String _alias;
-
   $ViewedItemsTable(this._db, [this._alias]);
-
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedTextColumn _id;
-
   @override
   GeneratedTextColumn get id => _id ??= _constructId();
-
   GeneratedTextColumn _constructId() {
     return GeneratedTextColumn(
       'id',
@@ -161,10 +148,8 @@ class $ViewedItemsTable extends ViewedItems
 
   final VerificationMeta _titleMeta = const VerificationMeta('title');
   GeneratedTextColumn _title;
-
   @override
   GeneratedTextColumn get title => _title ??= _constructTitle();
-
   GeneratedTextColumn _constructTitle() {
     return GeneratedTextColumn(
       'title',
@@ -175,10 +160,8 @@ class $ViewedItemsTable extends ViewedItems
 
   final VerificationMeta _contentMeta = const VerificationMeta('content');
   GeneratedTextColumn _content;
-
   @override
   GeneratedTextColumn get content => _content ??= _constructContent();
-
   GeneratedTextColumn _constructContent() {
     return GeneratedTextColumn(
       'content',
@@ -189,10 +172,8 @@ class $ViewedItemsTable extends ViewedItems
 
   final VerificationMeta _linkMeta = const VerificationMeta('link');
   GeneratedTextColumn _link;
-
   @override
   GeneratedTextColumn get link => _link ??= _constructLink();
-
   GeneratedTextColumn _constructLink() {
     return GeneratedTextColumn(
       'link',
@@ -203,15 +184,12 @@ class $ViewedItemsTable extends ViewedItems
 
   @override
   List<GeneratedColumn> get $columns => [id, title, content, link];
-
   @override
   $ViewedItemsTable get asDslTable => this;
-
   @override
   String get $tableName => _alias ?? 'viewed_items';
   @override
   final String actualTableName = 'viewed_items';
-
   @override
   VerificationContext validateIntegrity(ViewedItemsCompanion d,
       {bool isInserting = false}) {
@@ -244,7 +222,6 @@ class $ViewedItemsTable extends ViewedItems
 
   @override
   Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
-
   @override
   ViewedItem map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -278,12 +255,9 @@ class $ViewedItemsTable extends ViewedItems
 abstract class _$MyDatabase extends GeneratedDatabase {
   _$MyDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $ViewedItemsTable _viewedItems;
-
   $ViewedItemsTable get viewedItems => _viewedItems ??= $ViewedItemsTable(this);
-
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
-
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [viewedItems];
 }

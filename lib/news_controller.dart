@@ -8,13 +8,12 @@ import 'package:webfeed/webfeed.dart';
 final ValueNotifier<MyDatabase> database = ValueNotifier(MyDatabase());
 
 class ViewedNewsController {
-  final _url = 'http://www.cnbc.com/id/19789731/device/rss/rss.xml';
   final _client = Client();
 
   final ValueNotifier<PreparedFeed> viewedState = ValueNotifier(PreparedFeed());
 
   Future<void> fetchNews() async {
-    final res = await _client.get(_url);
+    final res = await _client.get(_sourceLink(sourceNotifier.value));
     final xmlStr = res.body;
     final parsedNews = RssFeed.parse(xmlStr);
     print('fetchNews(): ${parsedNews.items}');
@@ -33,8 +32,14 @@ class ViewedNewsController {
   }
 
   Future<bool> isNewsInHistory(RssItem item) async {
-    final something = await database.value.isViewedItem(item.guid);
-    if (something != null) {
+    //TODO implement isViewedItemByLink for another rss source.
+    ViewedItem _isViewed;
+    if (item.guid != null) {
+      _isViewed = await database.value.isViewedItemById(item.guid);
+    } else {
+      _isViewed = await database.value.isViewedItemByLink(item.link);
+    }
+    if (_isViewed != null) {
       return true;
     } else {
       return false;
@@ -97,4 +102,31 @@ class MyPageController {
     initialPage: 0,
     keepPage: true,
   );
+}
+
+enum Sources {cnbc, nytimes}
+
+final ValueNotifier<Sources> sourceNotifier = ValueNotifier(Sources.cnbc);
+
+_sourceLink(Sources sources) {
+  switch (sources) {
+    case Sources.cnbc:
+      return 'http://www.cnbc.com/id/19789731/device/rss/rss.xml';
+    case Sources.nytimes:
+      return 'https://www.nytimes.com/svc/collections/v1/publish/https://www.nytimes.com/section/world/rss.xml';
+  }
+}
+
+changeSource(Sources sources) {
+  sourceNotifier.value = sources;
+  print('source is: ${sourceNotifier.value}');
+}
+
+nameOfSource (Sources sources) {
+  switch (sources) {
+    case Sources.cnbc:
+      return '- CNBC';
+    case Sources.nytimes:
+      return '- NY Times';
+  }
 }

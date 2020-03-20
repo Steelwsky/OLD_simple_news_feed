@@ -12,7 +12,9 @@ class MyBottomNavBar extends StatefulWidget {
 
 class _MyBottomNavBarState extends State<MyBottomNavBar> {
   _MyBottomNavBarState(this.pageController);
+
   final PageController pageController;
+
   @override
   Widget build(BuildContext context) {
     final MyPageIndexController myIntController =
