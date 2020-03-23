@@ -32,7 +32,6 @@ class ViewedNewsController {
   }
 
   Future<bool> isNewsInHistory(RssItem item) async {
-    //TODO implement isViewedItemByLink for another rss source.
     ViewedItem _isViewed;
     if (item.guid != null) {
       _isViewed = await database.value.isViewedItemById(item.guid);
@@ -125,8 +124,8 @@ changeSource(Sources sources) {
 nameOfSource (Sources sources) {
   switch (sources) {
     case Sources.cnbc:
-      return '- CNBC';
+      return 'CNBC';
     case Sources.nytimes:
-      return '- NY Times';
+      return 'NY Times';
   }
 }

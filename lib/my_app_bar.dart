@@ -13,17 +13,32 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final newsController = Provider.of<ViewedNewsController>(context);
+    final MyPageIndexController myIntController =
+        Provider.of<MyPageIndexController>(context);
     return ValueListenableBuilder(
-        valueListenable: sourceNotifier,
+        valueListenable: myIntController.intState,
         builder: (_, sourceState, __) {
           return AppBar(
-            title: Text('NewsFeed ${nameOfSource(sourceNotifier.value)}'),
+            title: myIntController.intState.value == 0
+                ? TextAppBar()
+                : Text('History'),
             actions: <Widget>[
               IconButton(
                   icon: Icon(Icons.delete),
                   onPressed: newsController.deleteEntries)
             ],
           );
+        });
+  }
+}
+
+class TextAppBar extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder(
+        valueListenable: sourceNotifier,
+        builder: (_, sourceState, __) {
+          return Text('Home - ${nameOfSource(sourceNotifier.value)}');
         });
   }
 }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'news_controller.dart';
 
+//TODO tap should work not only on radiobutton, also on tap on text nearby (listTile to be more precise)
+
 class MyDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -13,7 +15,7 @@ class MyDrawer extends StatelessWidget {
             height: 108,
             child: DrawerHeader(
               child: Text(
-                'Select news sorce',
+                'Select news source',
                 style: TextStyle(color: Colors.white, fontSize: 21),
               ),
               decoration: BoxDecoration(
@@ -26,12 +28,14 @@ class MyDrawer extends StatelessWidget {
                 'CNBC International',
                 style: TextStyle(fontSize: 18),
               ),
-              trailing: MyRadio(sources: Sources.cnbc), onTap: () {}),
+              onTap: () {},
+              trailing: MyRadio(sources: Sources.cnbc)),
           ListTile(
               title: Text(
                 'The New York Times',
                 style: TextStyle(fontSize: 18),
               ),
+              onTap: () {},
               trailing: MyRadio(sources: Sources.nytimes)),
         ],
       ),
