@@ -12,7 +12,7 @@ class ListViewLatest extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewedController = Provider.of<ViewedNewsController>(context);
     return ListView(
-      key: PageStorageKey('latest'),
+        key: PageStorageKey('latest'),
         children: preparedRssFeed.items
             .map(
               (i) => ListTile(

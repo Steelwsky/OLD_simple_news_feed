@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 import 'package:simplenewsfeed/viewed.dart';
 import 'package:webfeed/webfeed.dart';
 
@@ -7,8 +7,9 @@ import 'package:webfeed/webfeed.dart';
 
 final ValueNotifier<MyDatabase> database = ValueNotifier(MyDatabase());
 
+
 class ViewedNewsController {
-  final _client = Client();
+  final _client = http.Client();
 
   final ValueNotifier<PreparedFeed> viewedState = ValueNotifier(PreparedFeed());
 
@@ -61,6 +62,7 @@ class ViewedNewsController {
     }
     viewedState.value = preparedFeed;
   }
+
 }
 
 class MyRssItem {
