@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:simplenewsfeed/image_network.dart';
-import 'package:simplenewsfeed/news_controller.dart';
 import 'package:simplenewsfeed/viewed.dart';
 import 'package:webfeed/webfeed.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -24,10 +22,6 @@ class SelectedNewsPage extends StatelessWidget {
                 padding: const EdgeInsets.all(10),
                 child: Column(
                   children: <Widget>[
-//                    Image.network(viewedNewsController.getPicture(rssItem.link)),
-                    MyImageNetwork(link: rssItem.link != null
-                        ? rssItem.link
-                        : null,),
                     Text(
                       rssItem != null
                           ? rssItem.description
