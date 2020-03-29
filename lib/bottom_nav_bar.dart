@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:simplenewsfeed/strings.dart';
 import 'news_controller.dart';
 
 class MyBottomNavBar extends StatefulWidget {
@@ -26,11 +27,11 @@ class _MyBottomNavBarState extends State<MyBottomNavBar> {
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Icon(Icons.home),
-                title: Text('Home'),
+                title: Text(HOME),
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.book),
-                title: Text('History'),
+                title: Text(HISTORY),
               ),
             ],
             currentIndex: myIntController.intState.value,

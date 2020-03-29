@@ -15,7 +15,7 @@ class BodyContent extends StatelessWidget {
               key: Key('refresh'),
               onRefresh: viewedController.fetchNews,
               child: rssFeed.items == null
-                  ? InitialEmptyList()
+                  ? EmptyList()
                   : ListViewLatest(preparedRssFeed: rssFeed));
         });
   }

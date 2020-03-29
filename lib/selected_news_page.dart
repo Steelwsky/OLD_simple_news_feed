@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simplenewsfeed/strings.dart';
 import 'package:simplenewsfeed/viewed.dart';
 import 'package:webfeed/webfeed.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -48,7 +49,7 @@ class SelectedNewsPage extends StatelessWidget {
                             child: Row(
                               children: <Widget>[
                                 Text(
-                                  'Continue reading ',
+                                  CONTINUE_READING,
                                   style: (TextStyle(fontSize: 20)),
                                 ),
                                 Icon(Icons.open_in_new, size: 20),

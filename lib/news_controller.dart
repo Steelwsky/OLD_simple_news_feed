@@ -5,16 +5,17 @@ import 'package:webfeed/webfeed.dart';
 
 //todo unit tests of controller
 
-final ValueNotifier<MyDatabase> database = ValueNotifier(MyDatabase());
+//TODO SOURCES NEEDS SEPARATE CLASS
 
+final ValueNotifier<MyDatabase> database = ValueNotifier(MyDatabase());
 
 class ViewedNewsController {
   final _client = http.Client();
-
   final ValueNotifier<PreparedFeed> viewedState = ValueNotifier(PreparedFeed());
 
+
   Future<void> fetchNews() async {
-    final res = await _client.get(_sourceLink(sourceNotifier.value));
+    final res = await _client.get(sourceModelNotifier.value.link);
     final xmlStr = res.body;
     final parsedNews = RssFeed.parse(xmlStr);
     print('fetchNews(): ${parsedNews.items}');
@@ -26,8 +27,12 @@ class ViewedNewsController {
       database.value.addToViewed(item);
       final list = viewedState.value.items;
       list[index] = MyRssItem(
-          item: list.elementAt(index).item,
-          isViewed: await isNewsInHistory(list.elementAt(index).item));
+          item: list
+              .elementAt(index)
+              .item,
+          isViewed: await isNewsInHistory(list
+              .elementAt(index)
+              .item));
       viewedState.value = PreparedFeed(items: list);
     }
   }
@@ -62,7 +67,6 @@ class ViewedNewsController {
     }
     viewedState.value = preparedFeed;
   }
-
 }
 
 class MyRssItem {
@@ -105,29 +109,47 @@ class MyPageController {
   );
 }
 
-enum Sources {cnbc, nytimes}
+enum Sources { cnbc, nytimes }
 
-final ValueNotifier<Sources> sourceNotifier = ValueNotifier(Sources.cnbc);
+final ValueNotifier<SourceModel> sourceModelNotifier = ValueNotifier(
+    sourceList[0]);
 
-_sourceLink(Sources sources) {
-  switch (sources) {
-    case Sources.cnbc:
-      return 'http://www.cnbc.com/id/19789731/device/rss/rss.xml';
-    case Sources.nytimes:
-      return 'https://www.nytimes.com/svc/collections/v1/publish/https://www.nytimes.com/section/world/rss.xml';
-  }
+void changingSource(int index) {
+  sourceList.forEach((element) => element.isSelected = false);
+  final SourceModel sm = sourceList[index];
+  sm.isSelected = true;
+  sourceModelNotifier.value = sm;
 }
 
-changeSource(Sources sources) {
-  sourceNotifier.value = sources;
-  print('source is: ${sourceNotifier.value}');
-}
+final List<SourceModel> sourceList = [
+  SourceModel(
+      source: Sources.cnbc,
+      link: 'http://www.cnbc.com/id/19789731/device/rss/rss.xml',
+      longName: 'CNBC International',
+      shortName: 'CNBC',
+      isSelected: true
+      ),
+      SourceModel(
+      source: Sources.nytimes,
+      link: 'https://www.nytimes.com/svc/collections/v1/publish/https://www.nytimes.com/section/world/rss.xml',
+      longName: 'The New York Times',
+      shortName: 'NY Times',
+    isSelected: false,
+  )
+];
 
-nameOfSource (Sources sources) {
-  switch (sources) {
-    case Sources.cnbc:
-      return 'CNBC';
-    case Sources.nytimes:
-      return 'NY Times';
-  }
+class SourceModel {
+  SourceModel(
+      {this.source,
+        this.link,
+        this.longName,
+        this.shortName,
+        this.isSelected,
+      });
+
+  final Sources source;
+  final String link;
+  final String longName;
+  final String shortName;
+  bool isSelected;
 }

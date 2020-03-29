@@ -4,7 +4,7 @@ import 'news_controller.dart';
 import 'selected_news_page.dart';
 
 class ListViewLatest extends StatelessWidget {
-  const ListViewLatest({Key key, @required this.preparedRssFeed})
+  const ListViewLatest({Key key, this.preparedRssFeed})
       : super(key: key);
   final PreparedFeed preparedRssFeed;
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:simplenewsfeed/strings.dart';
 import 'news_controller.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -21,7 +22,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
           return AppBar(
             title: myIntController.intState.value == 0
                 ? TextAppBar()
-                : Text('History'),
+                : Text(HISTORY),
             actions: <Widget>[
               IconButton(
                   icon: Icon(Icons.delete),
@@ -36,9 +37,9 @@ class TextAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-        valueListenable: sourceNotifier,
+        valueListenable: sourceModelNotifier,
         builder: (_, sourceState, __) {
-          return Text('Home - ${nameOfSource(sourceNotifier.value)}');
+          return Text('$HOME - ${sourceModelNotifier.value.shortName}');
         });
   }
 }

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:simplenewsfeed/body_content.dart';
+import 'package:simplenewsfeed/list_view_history.dart';
+import 'package:simplenewsfeed/list_view_latest.dart';
 import 'home_page.dart';
 import 'package:provider/provider.dart';
 import 'news_controller.dart';
@@ -16,14 +19,21 @@ class MyApp extends StatelessWidget {
           Provider<MyPageIndexController>(
             create: (_) => MyPageIndexController(),
           ),
-          Provider<Sources>(
-            create: (_) => Sources.cnbc,
+          Provider<SourceModel>(
+            create: (_) => SourceModel(),
           )
         ],
         child: MaterialApp(
           title: 'Flutter Demo',
           theme: ThemeData(primarySwatch: Colors.deepPurple),
           home: MyHomePage(),
+          initialRoute: '/',
+          routes: {
+            '/home': (context) => MyHomePage(),
+            '/body': (context) => BodyContent(),
+            '/listLatest': (context) => ListViewLatest(),
+            '/history': (context) => ListViewHistory(),
+          },
         ));
   }
 }

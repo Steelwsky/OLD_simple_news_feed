@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:simplenewsfeed/selected_news_page.dart';
+import 'package:simplenewsfeed/strings.dart';
 import 'package:simplenewsfeed/viewed.dart';
 
 class ListViewHistory extends StatelessWidget {
@@ -54,7 +55,7 @@ class EmptyHistoryList extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(top: 40.0),
         child: Text(
-          'There is no single record',
+          NO_SINGLE_RECORD,
           key: Key('empty'),
           style: TextStyle(fontSize: 18),
         ),
