@@ -8,7 +8,8 @@ import 'package:webfeed/webfeed.dart';
 final ValueNotifier<MyDatabase> database = ValueNotifier(MyDatabase());
 
 final ValueNotifier<SourceModel> sourceModelNotifier =
-    ValueNotifier(sourceList[0]);
+ValueNotifier(sourceList[0]);
+
 
 class ViewedNewsController {
   final _client = http.Client();
@@ -133,7 +134,7 @@ List<SourceModel> sourceList = [
   SourceModel(
     source: Sources.nytimes,
     link:
-        'https://www.nytimes.com/svc/collections/v1/publish/https://www.nytimes.com/section/world/rss.xml',
+    'https://www.nytimes.com/svc/collections/v1/publish/https://www.nytimes.com/section/world/rss.xml',
     longName: 'The New York Times',
     shortName: 'NY Times',
     isSelected: false,
@@ -141,6 +142,7 @@ List<SourceModel> sourceList = [
 ];
 
 class SourceController {
+
   void changingSource(int index) {
     sourceList.forEach((element) => element.isSelected = false);
     final SourceModel sm = sourceList[index];

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:simplenewsfeed/main.dart';
 import 'package:simplenewsfeed/strings.dart';
 import 'news_controller.dart';
 
@@ -35,7 +34,7 @@ class SourceList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ValueListenableBuilder<SourceModel>(
       valueListenable: sourceModelNotifier,
-      builder: (_, sourceModelState, __) {
+      builder: (_, __, ___) {
         return Column(
           children: <Widget>[
             ListView.builder(
@@ -83,11 +82,11 @@ class MyInkWellRadio extends StatelessWidget {
       ),
       onTap: () {
         sourceController.changingSource(indx);
-        Navigator.of(context).pushAndRemoveUntil(                   // TODO below ---------------------------------------------------------------------
-            MaterialPageRoute(builder: (context) => MyApp()),       // Don't know how to do this part. MyApp() does everything good,
-                (Route<dynamic> route) => false);                   // but user must manually update the list. MyHomePage() automatically updates list,
-//        Navigator.of(context).pop();                              // but AppBar and BottomNavBar don't update automatically,
-        viewedNewsController.fetchNews();                           // because they were done separately to each other.
+//        Navigator.of(context).pushAndRemoveUntil(                        // TODO below ---------------------------------------------------------------------
+//            MaterialPageRoute(builder: (context) => MyHomePage()),       // Don't know how to do this part. MyApp() does everything good,
+//                (Route<dynamic> route) => false);                        // but user must manually update the list. MyHomePage() automatically updates list,
+        Navigator.of(context).pop();                                       // but AppBar and BottomNavBar don't update automatically,
+        viewedNewsController.fetchNews();                                  // because they were done separately to each other.
       },
     );
   }

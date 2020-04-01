@@ -16,11 +16,11 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     final newsController = Provider.of<ViewedNewsController>(context);
     final MyPageIndexController myIntController =
         Provider.of<MyPageIndexController>(context);
-    return ValueListenableBuilder(
+    return ValueListenableBuilder<int>(
         valueListenable: myIntController.intState,
-        builder: (_, sourceState, __) {
+        builder: (_, pageIndexState, __) {
           return AppBar(
-            title: myIntController.intState.value == 0
+            title: pageIndexState == 0
                 ? TextAppBar()
                 : Text(HISTORY),
             actions: <Widget>[
@@ -36,10 +36,10 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
 class TextAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
+    return ValueListenableBuilder<SourceModel>(
         valueListenable: sourceModelNotifier,
         builder: (_, sourceState, __) {
-          return Text('$HOME - ${sourceModelNotifier.value.shortName}');
+          return Text('$HOME - ${sourceState.shortName}');
         });
   }
 }
