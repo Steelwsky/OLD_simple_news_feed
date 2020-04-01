@@ -19,8 +19,8 @@ class MyApp extends StatelessWidget {
           Provider<MyPageIndexController>(
             create: (_) => MyPageIndexController(),
           ),
-          Provider<SourceModel>(
-            create: (_) => SourceModel(),
+          Provider<SourceController>(
+            create: (_) => SourceController(),
           )
         ],
         child: MaterialApp(
