@@ -15,12 +15,17 @@ class ViewedNewsController {
   final _client = http.Client();
   final ValueNotifier<PreparedFeed> viewedState = ValueNotifier(PreparedFeed());
 
-  Future<void> fetchNews() async {
-    final res = await _client.get(sourceModelNotifier.value.link);
-    final xmlStr = res.body;
-    final parsedNews = RssFeed.parse(xmlStr);
-    print('fetchNews(): ${parsedNews.items}');
-    checkViewedNews(parsedNews);
+  Future<void> fetchNews({String link}) async {
+    final res = await _client.get(link != null ? link : sourceModelNotifier.value.link);
+    if (res.statusCode == 200) {
+      final xmlStr = res.body;
+      final parsedNews = RssFeed.parse(xmlStr);
+      print('fetchNews(): ${parsedNews.items}');
+      checkViewedNews(parsedNews);
+    } else {
+      throw Exception('Failed to load data');
+    }
+
   }
 
   void addNotViewedToHistory(RssItem item, int index) async {
@@ -48,13 +53,6 @@ class ViewedNewsController {
     }
   }
 
-  void deleteEntries() {
-    database.value.deleteRows();
-    database.value.watchAllViewedItems();
-    fetchNews();
-    print('db after deletion');
-  }
-
   void checkViewedNews(RssFeed feed) async {
     final List<MyRssItem> listItem = List<MyRssItem>();
     final preparedFeed = PreparedFeed(items: listItem);
@@ -63,6 +61,13 @@ class ViewedNewsController {
           item: feed.items[i], isViewed: await isNewsInHistory(feed.items[i])));
     }
     viewedState.value = preparedFeed;
+  }
+
+  void deleteHistory() {
+    database.value.deleteRows();
+    database.value.watchAllViewedItems();
+    fetchNews(link: sourceModelNotifier.value.link);
+    print('db after deletion');
   }
 }
 

@@ -7,6 +7,7 @@ class MyDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      key: ValueKey('drawer'),
       child: ListView(
         padding: EdgeInsets.all(0),
         children: <Widget>[
@@ -70,6 +71,7 @@ class MyInkWellRadio extends StatelessWidget {
     final sourceController = Provider.of<SourceController>(context);
     return InkWell(
       child: ListTile(
+        key: ValueKey('drawerItem$indx'),
         title: Text(
           title,
           style: TextStyle(fontSize: 18),
@@ -86,7 +88,7 @@ class MyInkWellRadio extends StatelessWidget {
 //            MaterialPageRoute(builder: (context) => MyHomePage()),       // Don't know how to do this part. MyApp() does everything good,
 //                (Route<dynamic> route) => false);                        // but user must manually update the list. MyHomePage() automatically updates list,
         Navigator.of(context).pop();                                       // but AppBar and BottomNavBar don't update automatically,
-        viewedNewsController.fetchNews();                                  // because they were done separately to each other.
+        viewedNewsController.fetchNews(link: sourceModelNotifier.value.link);                                  // because they were done separately to each other.
       },
     );
   }

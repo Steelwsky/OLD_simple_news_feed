@@ -26,7 +26,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
             actions: <Widget>[
               IconButton(
                   icon: Icon(Icons.delete),
-                  onPressed: newsController.deleteEntries)
+                  onPressed: newsController.deleteHistory)
             ],
           );
         });

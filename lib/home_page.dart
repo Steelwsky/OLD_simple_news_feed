@@ -10,6 +10,7 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final PageController pageController = PageController();
     return Scaffold(
+      key: GlobalKey(debugLabel: 'scaffoldKey'),
       drawer: MyDrawer(),
       appBar: MyAppBar(),
       body: MyPageView(pageController),
