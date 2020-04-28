@@ -14,8 +14,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final newsController = Provider.of<ViewedNewsController>(context);
-    final MyPageIndexController myIntController =
-        Provider.of<MyPageIndexController>(context);
+    final MyPageIndexController myIntController = Provider.of<MyPageIndexController>(context);
     return ValueListenableBuilder<int>(
         valueListenable: myIntController.intState,
         builder: (_, pageIndexState, __) {

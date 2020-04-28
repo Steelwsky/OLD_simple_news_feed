@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:simplenewsfeed/selected_news_page.dart';
-import 'package:simplenewsfeed/strings.dart';
-import 'package:simplenewsfeed/viewed.dart';
+import 'main.dart';
+import 'selected_news_page.dart';
+import 'strings.dart';
+import 'viewed.dart';
 
-class ListViewHistory extends StatelessWidget {
-  const ListViewHistory({Key key}) : super(key: key);
+class ListViewHistory extends StatelessWidget{
+  const ListViewHistory({Key key, this.myDatabase}) : super(key: key);
+  final Database myDatabase;
 
   @override
   Widget build(BuildContext context) {
-    final myDatabase = Provider.of<MyDatabase>(context);
+//    final myDatabase = Provider.of<MyDatabase>(context);
     return StreamBuilder(
-      stream: myDatabase.watchAllViewedItems(),
+      stream: myDatabase.watchAllViewedItems(),   //myDatabase.watchAllViewedItems(),
       builder: (context, AsyncSnapshot<List<ViewedItem>> snapshot) {
         final viewed = snapshot.data ?? List();
         return viewed.isEmpty
@@ -55,7 +56,7 @@ class EmptyHistoryList extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(top: 40.0),
         child: Text(
-          NO_SINGLE_RECORD,
+          EMPTY_LIST,
           key: Key('empty'),
           style: TextStyle(fontSize: 18),
         ),

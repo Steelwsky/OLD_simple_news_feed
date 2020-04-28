@@ -1,73 +1,65 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:simplenewsfeed/viewed.dart';
+import 'main.dart';
 import 'package:webfeed/webfeed.dart';
 
 //todo unit tests of controller
 
-final ValueNotifier<MyDatabase> database = ValueNotifier(MyDatabase());
-
-final ValueNotifier<SourceModel> sourceModelNotifier =
-ValueNotifier(sourceList[0]);
-
+final ValueNotifier<SourceModel> sourceModelNotifier = ValueNotifier(sourceList[0]);
 
 class ViewedNewsController {
-  final _client = http.Client();
+  ViewedNewsController(
+      {this.getRssFromUrl,
+      this.myDatabase});
+
+  final GetRssFromUrl getRssFromUrl;
+  final Database myDatabase;
+
+  // not here, in MyApp()
   final ValueNotifier<PreparedFeed> viewedState = ValueNotifier(PreparedFeed());
 
   Future<void> fetchNews({String link}) async {
-    final res = await _client.get(link != null ? link : sourceModelNotifier.value.link);
-    if (res.statusCode == 200) {
-      final xmlStr = res.body;
-      final parsedNews = RssFeed.parse(xmlStr);
-      print('fetchNews(): ${parsedNews.items}');
-      checkViewedNews(parsedNews);
-    } else {
-      throw Exception('Failed to load data');
-    }
-
-  }
-
-  void addNotViewedToHistory(RssItem item, int index) async {
-    if (await isNewsInHistory(item) == false) {
-      database.value.addToViewed(item);
-      final list = viewedState.value.items;
-      list[index] = MyRssItem(
-          item: list.elementAt(index).item,
-          isViewed: await isNewsInHistory(list.elementAt(index).item));
-      viewedState.value = PreparedFeed(items: list);
-    }
-  }
-
-  Future<bool> isNewsInHistory(RssItem item) async {
-    ViewedItem _isViewed;
-    if (item.guid != null) {
-      _isViewed = await database.value.isViewedItemById(item.guid);
-    } else {
-      _isViewed = await database.value.isViewedItemByLink(item.link);
-    }
-    if (_isViewed != null) {
-      return true;
-    } else {
-      return false;
-    }
+    final RssFeed feed = await getRssFromUrl(link != null ? link : sourceModelNotifier.value.link);
+    checkViewedNews(feed);
   }
 
   void checkViewedNews(RssFeed feed) async {
     final List<MyRssItem> listItem = List<MyRssItem>();
     final preparedFeed = PreparedFeed(items: listItem);
+    print(preparedFeed.items);
     for (var i = 0; i < feed.items.length; i++) {
-      preparedFeed.items.add(MyRssItem(
-          item: feed.items[i], isViewed: await isNewsInHistory(feed.items[i])));
+      preparedFeed.items.add(MyRssItem(item: feed.items[i], isViewed: await isNewsInHistory(feed.items[i])));
     }
     viewedState.value = preparedFeed;
   }
 
+  Future<bool> isNewsInHistory(RssItem item) async {
+    print('for testing isNewsInHistory intro, ${item.title} and ${item.guid}');
+    if (item.guid != null) {
+      return myDatabase.checkNewsInHistoryById(item.guid);
+    } else {
+      return myDatabase.checkNewsInHistoryByLink(item.link);
+    }
+  }
+
+  void addNotViewedToHistory(RssItem item, int index) async {
+    if (await isNewsInHistory(item) == false) {
+      myDatabase.addItemToHistory(item);
+      final list = viewedState.value.items;
+      list[index] =
+          MyRssItem(item: list.elementAt(index).item, isViewed: await isNewsInHistory(list.elementAt(index).item));
+      viewedState.value = PreparedFeed(items: list);
+    }
+  }
+
   void deleteHistory() {
-    database.value.deleteRows();
-    database.value.watchAllViewedItems();
+    myDatabase.deleteRows();
+    myDatabase.watchAllViewedItems();
     fetchNews(link: sourceModelNotifier.value.link);
     print('db after deletion');
+  }
+
+  void watchItems(){
+    myDatabase.watchAllViewedItems();
   }
 }
 
@@ -93,23 +85,12 @@ class MyPageIndexController {
   }
 
   void bottomTapped(int index, PageController pageController) {
-    print('pagecontroller index: ${pageController.initialPage}');
-    pageController.animateToPage(index,
-        duration: Duration(milliseconds: 500), curve: Curves.ease);
-
+    pageController.animateToPage(index, duration: Duration(milliseconds: 500), curve: Curves.ease);
     intState.value = index;
     print('bottomTapped: ${intState.value}');
   }
 }
 
-class MyPageController {
-  MyPageController({this.pageController});
-
-  PageController pageController = PageController(
-    initialPage: 0,
-    keepPage: true,
-  );
-}
 
 enum Sources { cnbc, nytimes }
 
@@ -132,14 +113,13 @@ class SourceModel {
 List<SourceModel> sourceList = [
   SourceModel(
       source: Sources.cnbc,
-      link: 'http://www.cnbc.com/id/19789731/device/rss/rss.xml',
+      link: 'https://www.cnbc.com/id/100727362/device/rss/rss.html',
       longName: 'CNBC International',
       shortName: 'CNBC',
       isSelected: true),
   SourceModel(
     source: Sources.nytimes,
-    link:
-    'https://www.nytimes.com/svc/collections/v1/publish/https://www.nytimes.com/section/world/rss.xml',
+    link: 'https://www.nytimes.com/svc/collections/v1/publish/https://www.nytimes.com/section/world/rss.xml',
     longName: 'The New York Times',
     shortName: 'NY Times',
     isSelected: false,
@@ -147,7 +127,6 @@ List<SourceModel> sourceList = [
 ];
 
 class SourceController {
-
   void changingSource(int index) {
     sourceList.forEach((element) => element.isSelected = false);
     final SourceModel sm = sourceList[index];

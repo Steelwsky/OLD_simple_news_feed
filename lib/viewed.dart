@@ -1,6 +1,5 @@
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:webfeed/webfeed.dart';
-
 part 'viewed.g.dart';
 
 class ViewedItems extends Table {
@@ -15,8 +14,7 @@ class ViewedItems extends Table {
 
 @UseMoor(tables: [ViewedItems])
 class MyDatabase extends _$MyDatabase {
-  MyDatabase._()
-      : super(FlutterQueryExecutor.inDatabaseFolder(path: 'db2.sqlite'));
+  MyDatabase._() : super(FlutterQueryExecutor.inDatabaseFolder(path: 'db2.sqlite'));
 
   static final MyDatabase _instance = MyDatabase._();
 
@@ -39,7 +37,7 @@ class MyDatabase extends _$MyDatabase {
       into(viewedItems).insert(viewed);
     } else {
       viewed = ViewedItem(
-        id: f.link,
+        id: f.link, //bad code
         title: f.title,
         content: f.description,
         link: f.link,
@@ -52,16 +50,14 @@ class MyDatabase extends _$MyDatabase {
     return (delete(viewedItems)).go();
   }
 
-  Future<ViewedItem> isViewedItemById(String id) {
-    return (select(viewedItems)
-          ..where((viewedItem) => viewedItem.id.equals(id)))
-        .getSingle();
+  Future<bool> isViewedItemById (String id) async {
+    ViewedItem item = await (select(viewedItems)..where((viewedItem) => viewedItem.id.equals(id))).getSingle();
+    return item != null ? true : false;
   }
 
-  Future<ViewedItem> isViewedItemByLink(String link) {
-    return (select(viewedItems)
-      ..where((viewedItem) => viewedItem.link.equals(link)))
-        .getSingle();
+  Future<bool> isViewedItemByLink(String link) async {
+    ViewedItem item = await (select(viewedItems)..where((viewedItem) => viewedItem.link.equals(link))).getSingle();
+    return item != null ? true : false;
   }
 
   Future<List<ViewedItem>> get allViewedItems => select(viewedItems).get();

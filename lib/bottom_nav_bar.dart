@@ -13,7 +13,6 @@ class MyBottomNavBar extends StatefulWidget {
 
 class _MyBottomNavBarState extends State<MyBottomNavBar> {
   _MyBottomNavBarState(this.pageController);
-
   final PageController pageController;
 
   @override
@@ -22,7 +21,7 @@ class _MyBottomNavBarState extends State<MyBottomNavBar> {
         Provider.of<MyPageIndexController>(context);
     return ValueListenableBuilder<int>(
       valueListenable: myIntController.intState,
-      builder: (_, newState, __) {
+      builder: (_, __, ___) {
         return BottomNavigationBar(
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
@@ -34,7 +33,7 @@ class _MyBottomNavBarState extends State<MyBottomNavBar> {
                 title: Text(HISTORY),
               ),
             ],
-            currentIndex: myIntController.intState.value,
+            currentIndex: __,
             selectedItemColor: Colors.amber[800],
             onTap: (index) {
               myIntController.bottomTapped(index, pageController);

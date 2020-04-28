@@ -4,6 +4,9 @@ import 'package:simplenewsfeed/strings.dart';
 import 'news_controller.dart';
 
 class MyDrawer extends StatelessWidget {
+//  MyDrawer(this.pageController);
+//  final PageController pageController;
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -31,6 +34,8 @@ class MyDrawer extends StatelessWidget {
 }
 
 class SourceList extends StatelessWidget {
+//  SourceList(this.pageController);
+//  final PageController pageController;
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<SourceModel>(
@@ -45,6 +50,7 @@ class SourceList extends StatelessWidget {
                 itemCount: sourceList.length,
                 itemBuilder: (BuildContext _, int index) {
                   return MyInkWellRadio(
+//                    pageController,
                     title: sourceList[index].longName,
                     isSelected: sourceList[index].isSelected,
                     indx: index,
@@ -58,16 +64,18 @@ class SourceList extends StatelessWidget {
 }
 
 class MyInkWellRadio extends StatelessWidget {
-  MyInkWellRadio({this.title, this.isSelected, this.indx});
+  MyInkWellRadio( {this.title, this.isSelected, this.indx});
 
   final String title;
   final bool isSelected;
   final int indx;
+//  final PageController pageController;
 
   @override
   Widget build(BuildContext context) {
     final ViewedNewsController viewedNewsController =
         Provider.of<ViewedNewsController>(context);
+//    final MyPageIndexController myIntController = Provider.of<MyPageIndexController>(context);
     final sourceController = Provider.of<SourceController>(context);
     return InkWell(
       child: ListTile(
@@ -84,11 +92,16 @@ class MyInkWellRadio extends StatelessWidget {
       ),
       onTap: () {
         sourceController.changingSource(indx);
-//        Navigator.of(context).pushAndRemoveUntil(                        // TODO below ---------------------------------------------------------------------
-//            MaterialPageRoute(builder: (context) => MyHomePage()),       // Don't know how to do this part. MyApp() does everything good,
-//                (Route<dynamic> route) => false);                        // but user must manually update the list. MyHomePage() automatically updates list,
-        Navigator.of(context).pop();                                       // but AppBar and BottomNavBar don't update automatically,
-        viewedNewsController.fetchNews(link: sourceModelNotifier.value.link);                                  // because they were done separately to each other.
+
+//        Navigator.of(context).pushReplacementNamed('/home');
+//        myIntController.pageChanged(indx);
+//        myIntController.bottomTapped(indx, pageController);
+
+//        Navigator.of(context).pushAndRemoveUntil(                                                   // TODO below ---------------------------------------------------------------------
+//            MaterialPageRoute(builder: (context) => MyHomePage()),                                  // Don't know how to do this part. MyApp() does everything good,
+//                (Route<dynamic> route) => false);                                                   // but user must manually update the list. MyHomePage() automatically updates list,
+        Navigator.of(context).pop();                                                                  // but AppBar and BottomNavBar don't update automatically,
+        viewedNewsController.fetchNews(link: sourceModelNotifier.value.link);                         // because they were done separately to each other.
       },
     );
   }

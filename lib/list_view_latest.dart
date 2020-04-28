@@ -16,6 +16,7 @@ class ListViewLatest extends StatelessWidget {
         children: preparedRssFeed.items
             .map(
               (i) => ListTile(
+                key: ValueKey('item${preparedRssFeed.items.indexOf(i)}'),
                 title: Text(
                   i.item.title,
                   style: TextStyle(fontSize: 18),
