@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:simplenewsfeed/list_view_history.dart';
+import 'package:simplenewsfeed/list_view_latest.dart';
 import 'body_content.dart';
 import 'viewed.dart';
 import 'package:webfeed/webfeed.dart';
@@ -12,8 +14,8 @@ typedef GetRssFromUrl = Future<RssFeed> Function(String url);
 typedef AddItemToHistory = void Function(RssItem item);
 typedef CheckNewsInHistoryById = Future<bool> Function(String id);
 typedef CheckNewsInHistoryByLink = Future<bool> Function(String link);
-typedef DeleteRows = Future<dynamic> Function();
-typedef WatchAllViewedItems = Stream<List<ViewedItem>> Function();
+typedef DeleteRows = Future<void> Function();
+typedef GetAllViewedItems = Future<List<ViewedItem>> Function();
 
 //final ValueNotifier<MyDatabase> database = ValueNotifier(MyDatabase());
 
@@ -35,13 +37,13 @@ abstract class Database {
       this.checkNewsInHistoryById,
       this.checkNewsInHistoryByLink,
       this.deleteRows,
-      this.watchAllViewedItems});
+      this.getAllViewedItems});
 
   final AddItemToHistory addItemToHistory;
   final CheckNewsInHistoryById checkNewsInHistoryById;
   final CheckNewsInHistoryByLink checkNewsInHistoryByLink;
   final DeleteRows deleteRows;
-  final WatchAllViewedItems watchAllViewedItems;
+  final GetAllViewedItems getAllViewedItems;
 }
 
 class DDatabase implements Database{
@@ -58,7 +60,7 @@ class DDatabase implements Database{
   DeleteRows get deleteRows => database.deleteRows;
 
   @override
-  WatchAllViewedItems get watchAllViewedItems => database.watchAllViewedItems;
+  GetAllViewedItems get getAllViewedItems => database.getAllViewedItems;
 
 }
 
@@ -66,6 +68,7 @@ void main() {
   final client = http.Client();
   final rssParser = NetworkResponseToRssParser();
   final Database myDatabase = DDatabase();
+
 
   runApp(MyApp(
       getRssFromUrl: (url) => client.get(url).then((data) {
@@ -85,8 +88,8 @@ class MyApp extends StatelessWidget {
     final PageController pageController = PageController(initialPage: 0);
     return MultiProvider(
         providers: [
-          Provider<ViewedNewsController>(
-              create: (_) => ViewedNewsController(getRssFromUrl: getRssFromUrl, myDatabase: myDatabase)),
+          Provider<NewsController>(
+              create: (_) => NewsController(getRssFromUrl: getRssFromUrl, myDatabase: myDatabase)),
           Provider<MyPageIndexController>(
             create: (_) => MyPageIndexController(),
           ),
@@ -102,6 +105,8 @@ class MyApp extends StatelessWidget {
           routes: {
             '/home': (context) => MyHomePage(),
             '/body': (context) => BodyContent(),
+            '/latest': (context) => ListViewLatest(),
+            '/history': (context) => ListViewHistory(),
           },
         ));
   }

@@ -24,9 +24,7 @@ class SelectedNewsPage extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     Text(
-                      rssItem != null
-                          ? rssItem.description
-                          : viewedItem.content,
+                      rssItem != null ? rssItem.description : viewedItem.content,
                       style: TextStyle(fontSize: 16),
                     ),
                     Container(
@@ -37,9 +35,7 @@ class SelectedNewsPage extends StatelessWidget {
                           padding: const EdgeInsets.only(top: 16.0),
                           child: InkWell(
                             onTap: () async {
-                              final url = rssItem != null
-                                  ? rssItem.link
-                                  : viewedItem.link;
+                              final url = rssItem != null ? rssItem.link : viewedItem.link;
                               if (await canLaunch(url)) {
                                 await launch(url);
                               } else {

@@ -13,19 +13,15 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final newsController = Provider.of<ViewedNewsController>(context);
+    final newsController = Provider.of<NewsController>(context);
     final MyPageIndexController myIntController = Provider.of<MyPageIndexController>(context);
     return ValueListenableBuilder<int>(
         valueListenable: myIntController.intState,
         builder: (_, pageIndexState, __) {
           return AppBar(
-            title: pageIndexState == 0
-                ? TextAppBar()
-                : Text(HISTORY),
+            title: pageIndexState == 0 ? TextAppBar() : Text(HISTORY),
             actions: <Widget>[
-              IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: newsController.deleteHistory)
+              IconButton(key: ValueKey('deleteIcon'), icon: Icon(Icons.delete), onPressed: newsController.deleteHistory)
             ],
           );
         });

@@ -7,9 +7,9 @@ import 'empty_list.dart';
 class BodyContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final viewedController = Provider.of<ViewedNewsController>(context);
+    final viewedController = Provider.of<NewsController>(context);
     return ValueListenableBuilder<PreparedFeed>(
-        valueListenable: viewedController.viewedState,
+        valueListenable: viewedController.preparedFeedState,
         builder: (_, rssFeed, __) {
           return RefreshIndicator(
               key: Key('refresh'),

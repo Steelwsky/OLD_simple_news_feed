@@ -1,5 +1,6 @@
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:webfeed/webfeed.dart';
+
 part 'viewed.g.dart';
 
 class ViewedItems extends Table {
@@ -25,7 +26,7 @@ class MyDatabase extends _$MyDatabase {
   @override
   int get schemaVersion => 1;
 
-  void addToViewed(RssItem f) {
+  void addToViewed(RssItem f) async {
     ViewedItem viewed;
     if (f.guid != null) {
       viewed = ViewedItem(
@@ -34,7 +35,7 @@ class MyDatabase extends _$MyDatabase {
         content: f.description,
         link: f.link,
       );
-      into(viewedItems).insert(viewed);
+      await into(viewedItems).insert(viewed);
     } else {
       viewed = ViewedItem(
         id: f.link, //bad code
@@ -42,15 +43,16 @@ class MyDatabase extends _$MyDatabase {
         content: f.description,
         link: f.link,
       );
-      into(viewedItems).insert(viewed);
+      await into(viewedItems).insert(viewed);
     }
   }
 
-  Future deleteRows() {
-    return (delete(viewedItems)).go();
+  Future<void> deleteRows() async {
+    print('inside of deleteRows in db class');
+    return await (delete(viewedItems)).go();
   }
 
-  Future<bool> isViewedItemById (String id) async {
+  Future<bool> isViewedItemById(String id) async {
     ViewedItem item = await (select(viewedItems)..where((viewedItem) => viewedItem.id.equals(id))).getSingle();
     return item != null ? true : false;
   }
@@ -60,7 +62,19 @@ class MyDatabase extends _$MyDatabase {
     return item != null ? true : false;
   }
 
-  Future<List<ViewedItem>> get allViewedItems => select(viewedItems).get();
+//  Future<List<ViewedItem>> get allViewedItems => select(viewedItems).get();
 
-  Stream<List<ViewedItem>> watchAllViewedItems() => select(viewedItems).watch();
+//  List<ViewedItem> getAllViewedItems() {
+//    List<ViewedItem> list = [];
+//    select(viewedItems).get().then((items) {
+//      list = items;
+//    });
+//    return list;
+//  }
+
+  Future<List<ViewedItem>> getAllViewedItems() {
+//    List<ViewedItem> list = [];
+    return select(viewedItems).get();
+  }
+
 }
